@@ -26,9 +26,7 @@ foreach ($phones as $phone) {
 // Persiste o estudante e seus telefones
 $em->persist($student);
 
-// Fluxo de dados
-echo "Criando estudante com " . count($phones) . " telefones.\n";
-echo "Nome: {$student->name}\n";
+
 
 
 // Salva os dados no banco de dados

@@ -1,5 +1,6 @@
 <?php
 
+use Fernando\Doctrine\Entity\Course;
 use Fernando\Doctrine\Entity\Phone;
 use Fernando\Doctrine\Entity\Student;
 use Fernando\Doctrine\Helper\EntityManagerFactory;
@@ -16,17 +17,32 @@ $studentList = $studentRepo->findAll();
 
 foreach ($studentList as $student) {
     echo "ID: $student->id $student->name\nEmail: $student->email\nData de nascimento: " . $student->birthDate->format('d/m/Y') . PHP_EOL;
-    echo "Telefones: \n";
 
-    echo implode(
-        ',',
-        $student
-            ->phones()
-            ->map(fn(Phone $phone) => $phone->number)
-            ->toArray()
-    );
+    if ($student->phones()->count() > 0) {
+        echo "Telefones: ";
 
-    echo PHP_EOL;
+        echo implode(
+            ',',
+            $student
+                ->phones()
+                ->map(fn(Phone $phone) => $phone->number)
+                ->toArray()
+        );
+        echo PHP_EOL;
+    }
+
+    if ($student->courses()->count() > 0) {
+        echo "Cursos: ";
+
+        echo implode(
+            ',',
+            $student
+                ->courses()
+                ->map(fn(Course $course) => $course->name)
+                ->toArray()
+        );
+    }
+    echo PHP_EOL . PHP_EOL;
 }
 
 /** @var Student $s */

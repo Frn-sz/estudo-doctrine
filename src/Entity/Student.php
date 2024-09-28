@@ -2,10 +2,13 @@
 
 namespace Fernando\Doctrine\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\OneToMany;
 
 #[Entity]
 class Student
@@ -15,14 +18,32 @@ class Student
     #[Column(type: 'integer')]
     public int $id;
 
+    #[OneToMany(targetEntity: Phone::class, mappedBy: 'student', cascade: ['persist', 'remove'])]
+    private iterable $phones;
+
     public function __construct(
         #[Column(type: 'string')]
-        public string             $name,
+        public string    $name,
         #[Column(type: 'string')]
-        public string             $email,
+        public string    $email,
         #[Column(type: 'date')]
         public \DateTime $birthDate
     )
     {
+        $this->phones = new ArrayCollection();
+    }
+
+    public function addPhone(Phone $phone): void
+    {
+        $this->phones[] = $phone;
+        $phone->setStudent($this);
+    }
+
+    /**
+     * @return Collection
+     */
+    public function phones(): Collection
+    {
+        return $this->phones;
     }
 }

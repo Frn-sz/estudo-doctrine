@@ -9,7 +9,7 @@ require __DIR__ . '/../vendor/autoload.php';
 
 $entityManager = EntityManagerFactory::createEntityManager();
 
-$student = $entityManager->getReference(Student::class, $argv[1]);
+$student = $entityManager->find(Student::class, $argv[1]);
 
 try {
     $entityManager->remove($student);
